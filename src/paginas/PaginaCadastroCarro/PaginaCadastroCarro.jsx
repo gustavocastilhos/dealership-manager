@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { useNavigate, useParams } from "react-router-dom";
 import { cadastrarCarroNoLocalStorage, buscarCarrosDoLocalStorage } from "../servicos/clientes.servico";
 import { formatarComMascara, formatarPlaca, MASCARA_ANO } from "../../utils/formatarComMascara";
+import { validarAnoCarro } from '../../utils/validarAno';
 
 function PaginaCadastroCarro() {
     const navigate = useNavigate();
@@ -32,8 +33,12 @@ function PaginaCadastroCarro() {
     }, [params.id]);
 
     function cadastrarCarro() {
-        if (!formcarros.marca.trim() || !formcarros.modelo.trim() || !formcarros.ano.trim()) {
-            toast.error("Preencha os campos marca, modelo e ano corretamente!");
+        if (!formcarros.marca.trim() || !formcarros.modelo.trim() ) {
+            toast.error("Preencha os campos marca e modelo corretamente!");
+            return;
+        }
+        if (!validarAnoCarro(formcarros.ano)) {
+            toast.error("Ano inválido! O ano deve estar entre 1900 e o próximo ano.");
             return;
         }
         if (!formcarros.cor.trim()) {
@@ -44,10 +49,10 @@ function PaginaCadastroCarro() {
             toast.error("Preencha o campo placa!");
             return;
         }
-        if (!formcarros.foto.trim()) {
+        /* if (!formcarros.foto.trim()) {
             toast.error("Adicione uma foto do carro!");
             return;
-        }
+        } */
 
         const carro = {
             ...formcarros,
