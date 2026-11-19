@@ -5,7 +5,7 @@ function Cabecalho() {
   return (
     <header className="Cabecalho_root">
       <img
-        src="public\carro-icon.png"
+        src="carro-icon.png"
         style={{
           width: "37px",
           height: "37px",
