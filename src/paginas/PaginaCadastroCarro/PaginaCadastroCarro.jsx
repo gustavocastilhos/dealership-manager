@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import BotaoCustomizado from "../../componentes/BotaoCustomizado/BotaoCustomizado";
 import CampoCustomizado from "../../componentes/CampoCustomizado/CampoCustomizado";
-import Principal from "../../componentes/Principal/Principal";
+import Principal from "../../componentes/principal/principal";
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from "react-router-dom";
 import { cadastrarCarroNoLocalStorage, buscarCarrosDoLocalStorage } from "../servicos/clientes.servico";
