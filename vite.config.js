@@ -8,9 +8,6 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: [
-        'favicon.svg',
-        'favicon.ico',
-        'AppIcon-1024.png',
         'play_store_512.png',
         'carro-icon.png',
       ],
@@ -31,12 +28,8 @@ export default defineConfig({
             src: '/play_store_512.png',
             sizes: '512x512', // Ajustado para o tamanho real que o nome do arquivo sugere
             type: 'image/png',
-          },
-          {
-            src: '/AppIcon-1024.png',
-            sizes: '1024x1024', // Opcional, mas útil para telas de altíssima resolução
-            type: 'image/png',
           }
+    
         ]
       },
     }),
