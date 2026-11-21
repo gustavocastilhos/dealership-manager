@@ -4,18 +4,22 @@ function BotaoCustomizado(props) {
   const classes = ["BotaoCustomizado_root"];
 
   switch (props.tipo) {
-    case "primario":
-      classes.push("BotaoCustomizado_primario");
+    case "card":
+      classes.push("BotaoCustomizado_card");
       break;
-    case "secundario":
-      classes.push("BotaoCustomizado_secundario");
+    case "submit":
+      classes.push("BotaoCustomizado_submit");
       break;
     default:
       break;
   }
 
   return (
-    <button className={classes.join(" ")} onClick={props.aoClicar}>
+    <button
+      type={props.tipo === "submit" ? "submit" : "button"}
+      className={classes.join(" ")}
+      onClick={props.aoClicar}
+    >
       {props.children}
     </button>
   );

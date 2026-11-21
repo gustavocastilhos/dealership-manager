@@ -1,43 +1,60 @@
-/* Contentor para organizar em 2 colunas */
 .grid-botoes {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
 }
 
-/* Atualização das suas classes originais */
-.BotaoCustomizado_primario,
-.BotaoCustomizado_secundario {
-  /* Alinhamento interno (ícone em cima, texto em baixo) */
+.BotaoCustomizado_card {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  
-  /* Formato e tamanho */
   min-height: 120px;
   padding: 16px;
   border-radius: 12px;
-  border: 1px solid #333; /* Borda escura da imagem 1 */
+  border: 1px solid #333;
   cursor: pointer;
-  
-  /* Cores: substituindo as variáveis originais para igualar a imagem 1 */
-  background-color: #f4f6f8; 
-  color: #1a1a1a; 
-  
-  /* Tipografia */
+  background-color: #f4f6f8;
+  color: #1a1a1a;
   font-size: 14px;
   font-weight: 500;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
-/* Tamanho dos ícones dentro dos seus botões */
-.BotaoCustomizado_primario svg,
-.BotaoCustomizado_secundario svg,
-.BotaoCustomizado_primario i,
-.BotaoCustomizado_secundario i {
+.BotaoCustomizado_card:hover {
+  background-color: #e8edf3;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.BotaoCustomizado_card:focus-visible,
+.BotaoCustomizado_submit:focus-visible {
+  outline: 2px solid #285088;
+  outline-offset: 2px;
+}
+
+.BotaoCustomizado_card svg,
+.BotaoCustomizado_card i {
   font-size: 32px;
   width: 32px;
   height: 32px;
+}
+
+.BotaoCustomizado_submit {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 7px;
+  background-color: #285088;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.BotaoCustomizado_submit:hover {
+  background-color: #1d3d68;
 }

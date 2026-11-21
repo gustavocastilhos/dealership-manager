@@ -8,6 +8,7 @@ import { cadastrarCarroNoLocalStorage, buscarCarrosDoLocalStorage } from "../ser
 import { formatarComMascara, formatarPlaca, MASCARA_ANO, validarPlaca, formatarCor } from "../../utils/formatarComMascara";
 import { validarAnoCarro } from '../../utils/validarAno';
 import { buscarMarcas, buscarModelos } from '../servicos/apiCarros';
+import "./PaginaCadastroCarro.css";
 
 function PaginaCadastroCarro() {
     const navigate = useNavigate();
@@ -58,12 +59,20 @@ function PaginaCadastroCarro() {
 
 
     function cadastrarCarro() {
-        if (!formcarros.marca.trim() || !formcarros.modelo.trim()) {
-            toast.error("Preencha os campos marca e modelo corretamente!");
+        if (!formcarros.marca.trim()) {
+            toast.error("Preencha o campo marca!");
+            return;
+        }
+        if (!formcarros.modelo.trim()) {
+            toast.error("Preencha o campo modelo!");
+            return;
+        }
+        if (!formcarros.ano.trim()) {
+            toast.error("Preencha o campo ano!");
             return;
         }
         if (!validarAnoCarro(formcarros.ano)) {
-            toast.error("Ano inválido! Digite um ano válido.");
+            toast.error("Ano inválido! Digite um ano válido com quatro dígitos.");
             return;
         }
         if (!formcarros.cor.trim()) {
@@ -74,7 +83,6 @@ function PaginaCadastroCarro() {
             toast.error("Preencha o campo placa corretamente!");
             return;
         }
-        // NOVA TRAVA COM A FUNÇÃO IMPORTADA
         if (!validarPlaca(formcarros.placa)) {
             toast.error("Digite a placa completa (ex: ABC-1234 ou ABC-1D23)!");
             return;
@@ -92,108 +100,112 @@ function PaginaCadastroCarro() {
 
     return (
         <Principal titulo={titulo} voltarPara="/">
+            <form
+                className="PaginaCadastroCarro_form"
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    cadastrarCarro();
+                }}
+            >
+                <div style={{ position: 'relative' }}>
+                    <CampoCustomizado
+                        label="Marca"
+                        placeholder="Digite a marca do carro"
+                        value={formcarros.marca}
+                        list="lista-marcas"
+                        onChange={(e) => {
+                            const nomeDigitado = e.target.value;
+                            setFormCarros({ ...formcarros, marca: nomeDigitado, modelo: "" });
 
-            {/* CAMPO MARCA COM DATALIST */}
-            <div style={{ position: 'relative' }}>
+                            const marcaEncontrada = listaMarcas.find(m => m.nome === nomeDigitado);
+                            if (marcaEncontrada) {
+                                setMarcaSelecionada(marcaEncontrada.codigo);
+                            } else {
+                                setMarcaSelecionada("");
+                            }
+                        }}
+                        maxLength={30}
+                    />
+                    <datalist id="lista-marcas">
+                        {listaMarcas.map((marca) => (
+                            <option key={marca.codigo} value={marca.nome} />
+                        ))}
+                    </datalist>
+                </div>
+
+                <div style={{ position: 'relative' }}>
+                    <CampoCustomizado
+                        label="Modelo"
+                        placeholder="Digite o modelo do carro"
+                        value={formcarros.modelo}
+                        list="lista-modelos"
+                        onChange={(e) => setFormCarros({ ...formcarros, modelo: e.target.value })}
+                        maxLength={40}
+                    />
+                    <datalist id="lista-modelos">
+                        {listaModelos.map((modelo) => (
+                            <option key={modelo.codigo} value={modelo.nome} />
+                        ))}
+                    </datalist>
+                </div>
+
                 <CampoCustomizado
-                    label="Marca"
-                    placeholder="Digite a marca do carro"
-                    value={formcarros.marca}
-                    list="lista-marcas" // Conecta o input com o datalist abaixo
+                    label="Ano"
+                    placeholder="Digite o ano do carro"
+                    value={formcarros.ano}
+                    onChange={(e) => setFormCarros({ ...formcarros, ano: formatarComMascara(e.target.value, MASCARA_ANO) })}
+                    maxLength={4}
+                />
+                <CampoCustomizado
+                    label="Cor"
+                    placeholder="Digite a cor do carro"
+                    value={formcarros.cor}
+                    onChange={(e) => setFormCarros({ ...formcarros, cor: formatarCor(e.target.value) })}
+                    maxLength={15}
+                />
+                <CampoCustomizado
+                    label="Placa"
+                    placeholder="Digite a placa do carro"
+                    value={formcarros.placa}
+                    onChange={(e) => setFormCarros({ ...formcarros, placa: formatarPlaca(e.target.value) })}
+                    maxLength={8}
+                />
+                <CampoCustomizado
+                    type="file"
+                    accept="image/*"
+                    label="Foto"
                     onChange={(e) => {
-                        const nomeDigitado = e.target.value;
-                        setFormCarros({ ...formcarros, marca: nomeDigitado, modelo: "" }); // Reseta o modelo ao trocar a marca
-
-                        // Descobre o código da marca digitada para buscar os modelos na API
-                        const marcaEncontrada = listaMarcas.find(m => m.nome === nomeDigitado);
-                        if (marcaEncontrada) {
-                            setMarcaSelecionada(marcaEncontrada.codigo);
-                        } else {
-                            setMarcaSelecionada("");
+                        const imagem = e.target.files[0];
+                        if (imagem) {
+                            const reader = new FileReader();
+                            reader.onload = (event) => {
+                                setFormCarros({ ...formcarros, foto: event.target.result });
+                            };
+                            reader.readAsDataURL(imagem);
                         }
                     }}
-                    maxLength={30}
                 />
-                <datalist id="lista-marcas">
-                    {listaMarcas.map((marca) => (
-                        <option key={marca.codigo} value={marca.nome} />
-                    ))}
-                </datalist>
-            </div>
 
-            {/* CAMPO MODELO COM DATALIST */}
-            <div style={{ position: 'relative' }}>
-                <CampoCustomizado
-                    label="Modelo"
-                    placeholder="Digite o modelo do carro"
-                    value={formcarros.modelo}
-                    list="lista-modelos" // Conecta o input com o datalist de modelos
-                    onChange={(e) => setFormCarros({ ...formcarros, modelo: e.target.value })}
-                    maxLength={40}
-                />
-                <datalist id="lista-modelos">
-                    {listaModelos.map((modelo) => (
-                        <option key={modelo.codigo} value={modelo.nome} />
-                    ))}
-                </datalist>
-            </div>
+                {formcarros.foto && (
+                    <div>
+                        <img
+                            src={formcarros.foto}
+                            alt="Foto do Carro"
+                            style={{
+                                width: "150px",
+                                height: "150px",
+                                objectFit: "cover",
+                                borderRadius: "8px",
+                                marginTop: "10px"
+                            }}
+                        />
+                    </div>
+                )}
 
-            <CampoCustomizado
-                label="Ano"
-                placeholder="Digite o ano do carro"
-                value={formcarros.ano}
-                onChange={(e) => setFormCarros({ ...formcarros, ano: formatarComMascara(e.target.value, MASCARA_ANO) })}
-                maxLength={4}
-            />
-            <CampoCustomizado
-                label="Cor"
-                placeholder="Digite a cor do carro"
-                value={formcarros.cor}
-                onChange={(e) => setFormCarros({ ...formcarros, cor: formatarCor(e.target.value) })}
-                maxLength={15}
-            />
-            <CampoCustomizado
-                label="Placa"
-                placeholder="Digite a placa do carro"
-                value={formcarros.placa}
-                onChange={(e) => setFormCarros({ ...formcarros, placa: formatarPlaca(e.target.value) })}
-                maxLength={8}
-            />
-            <CampoCustomizado
-                type="file"
-                accept="image/*"
-                label="Foto"
-                onChange={(e) => {
-                    const imagem = e.target.files[0];
-                    if (imagem) {
-                        const reader = new FileReader();
-                        reader.onload = (event) => {
-                            setFormCarros({ ...formcarros, foto: event.target.result });
-                        };
-                        reader.readAsDataURL(imagem);
-                    }
-                }}
-            />
-
-            {formcarros.foto && (
-                <div>
-                    <img
-                        src={formcarros.foto}
-                        alt="Foto do Carro"
-                        style={{
-                            width: "150px",
-                            height: "150px",
-                            objectFit: "cover",
-                            borderRadius: "8px",
-                            marginTop: "10px"
-                        }}
-                    />
-                </div>
-            )}
-
-            <BotaoCustomizado tipo="primario" aoClicar={cadastrarCarro}>
-                Cadastrar
-            </BotaoCustomizado>
+                <BotaoCustomizado tipo="submit">
+                    Cadastrar
+                </BotaoCustomizado>
+            </form>
         </Principal>
     );
 }

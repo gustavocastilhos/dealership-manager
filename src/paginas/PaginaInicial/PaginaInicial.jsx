@@ -23,7 +23,7 @@ function PaginaInicial() {
       <div className="grid-botoes">
 
         <BotaoCustomizado
-          tipo="primario"
+          tipo="card"
           aoClicar={() => navigate("/cadastro-carro")} /* Ajuste esta rota para a correta */
         >
           <FaCar />
@@ -31,7 +31,7 @@ function PaginaInicial() {
         </BotaoCustomizado>
 
         <BotaoCustomizado
-          tipo="secundario"
+          tipo="card"
           aoClicar={() => navigate("/lista-carros")}
         >
           <GiHomeGarage />
@@ -39,7 +39,7 @@ function PaginaInicial() {
         </BotaoCustomizado>
 
         <BotaoCustomizado
-          tipo="primario"
+          tipo="card"
           aoClicar={() => navigate("/ver-cliente")} /* Ajuste esta rota para a correta */
         >
           <TbReportSearch />
@@ -47,7 +47,7 @@ function PaginaInicial() {
         </BotaoCustomizado>
 
         <BotaoCustomizado
-          tipo="secundario"
+          tipo="card"
           aoClicar={() => navigate("/agendar-servico")} /* Ajuste esta rota para a correta */
         >
           <BsGraphUpArrow />
