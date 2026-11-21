@@ -4,7 +4,7 @@ import CampoCustomizado from "../../componentes/CampoCustomizado/CampoCustomizad
 import Principal from "../../componentes/principal/principal";
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from "react-router-dom";
-import { cadastrarCarroNoLocalStorage, buscarCarrosDoLocalStorage } from "../servicos/clientes.servico";
+import { cadastrarCarroNoLocalStorage, buscarCarrosDoLocalStorage } from "../servicos/carros.servico";
 import { formatarComMascara, formatarPlaca, MASCARA_ANO, validarPlaca, formatarCor } from "../../utils/formatarComMascara";
 import { validarAnoCarro } from '../../utils/validarAno';
 import { buscarMarcas, buscarModelos } from '../servicos/apiCarros';
@@ -13,28 +13,28 @@ function PaginaCadastroCarro() {
     const navigate = useNavigate();
     const params = useParams();
 
-    const [formcarros, setFormCarros] = useState({
-        id: "",
-        marca: "",
-        modelo: "",
-        ano: "",
-        cor: "",
-        placa: "",
-        foto: "",
+    const [formcarros, setFormCarros] = useState(() => {
+        if (params.id) {
+            const carro = buscarCarrosDoLocalStorage().find((item) => item.id === +params.id);
+            if (carro) {
+                return carro;
+            }
+        }
+
+        return {
+            id: "",
+            marca: "",
+            modelo: "",
+            ano: "",
+            cor: "",
+            placa: "",
+            foto: "",
+        };
     });
 
     const [listaMarcas, setListaMarcas] = useState([]);
     const [listaModelos, setListaModelos] = useState([]);
     const [marcaSelecionada, setMarcaSelecionada] = useState("");
-
-    useEffect(() => {
-        if (params.id) {
-            const carros = buscarCarrosDoLocalStorage().find((carro) => carro.id === +params.id);
-            if (carros) {
-                setFormCarros(carros);
-            }
-        }
-    }, [params.id]);
 
     useEffect(() => {
         const carregarMarcas = async () => {

@@ -1,14 +1,49 @@
-.PaginaListaClientes_item {
-border: 1px solid #000000;
-background-color: #ffffff;
-border-radius: 0%;
-padding: 0%;
-display: flex;
-justify-content: space-between;
-align-items: center;
+.PaginaListaCarros_item {
+  border: 1px solid #000000;
+  background-color: #ffffff;
+  border-radius: 0%;
+  padding: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
 }
 
-.PaginaListaClientes_adicionar {
+.PaginaListaCarros_foto {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+}
+
+.PaginaListaCarros_detalhes {
+  flex: 1;
+  min-width: 0;
+}
+
+.PaginaListaCarros_detalhes h3,
+.PaginaListaCarros_detalhes h4,
+.PaginaListaCarros_detalhes p {
+  overflow-wrap: anywhere;
+}
+
+.PaginaListaCarros_acoes {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.PaginaListaCarros_acoes button {
+  padding: 4px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.PaginaListaCarros_vazio {
+  text-align: center;
+}
+
+.PaginaListaCarros_adicionar {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -27,5 +62,5 @@ align-items: center;
   position: fixed; 
   bottom: 80px; 
   right: 20px; 
-  z-index: 1000; /* Garante que fica por cima das listas de clientes */
+  z-index: 1000;
 }

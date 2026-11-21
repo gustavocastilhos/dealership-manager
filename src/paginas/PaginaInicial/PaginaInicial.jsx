@@ -32,7 +32,7 @@ function PaginaInicial() {
 
         <BotaoCustomizado
           tipo="secundario"
-          aoClicar={() => navigate("/lista-clientes")}
+          aoClicar={() => navigate("/lista-carros")}
         >
           <GiHomeGarage />
           <span>Gerenciar estoque</span>
